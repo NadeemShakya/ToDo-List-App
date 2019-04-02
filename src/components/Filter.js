@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types"
 export const Filter = (props) => {
     return(
             <div className = "filterClass">
@@ -11,8 +10,4 @@ export const Filter = (props) => {
             </div>   
     );
 
-}
-
-Filter.prototype = {
-    tasks: PropTypes.function
 }

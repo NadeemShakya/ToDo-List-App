@@ -31,7 +31,7 @@ export class AddTask extends React.Component {
         return(
             <div className = "addTask">
                 <input  ref = {this.textInput} type="text" placeholder = "Add new task." onChange = {(event) => this.getUserInput(event)} />
-                <button onClick = {() => this.verifyEntry()}>+</button>
+                <button onClick = {() => this.verifyEntry()} title = "Click to Add.">+</button>
             </div>
         );
     }

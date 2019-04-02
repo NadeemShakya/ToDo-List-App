@@ -9,10 +9,8 @@ export const CompletedTasks = (props) => {
                 props.task.map((item) => {
                   return(
                     <li key={item.index} className="ui-state-default" >
-                      
                       <span className = "completed">{item.content}</span>
-                      
-                      
+                      <img src= {require('./../images/dustbin.svg')} alt="dustbin" onClick = {(e) => props.deleteTask(e)} id = {item.index} title = "Remove from Completed Tasks."/>      
                     </li>
                   )     
                })

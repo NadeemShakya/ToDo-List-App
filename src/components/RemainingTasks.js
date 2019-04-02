@@ -10,7 +10,6 @@ export const RemainingTasks = (props) => {
                     props.task.map((item) => {
                       return(
                         <li key={item.index} className="ui-state-default" >
-                          
                               <span className = "remaining">{item.content}</span>
                               <img src= {require('./../images/check-mark-button.svg')} alt="check-mark-button" onClick = {(e) => props.deleteTask(e)} id = {item.index} title = "Add to Completed Tasks."/>      
                         </li>

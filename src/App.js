@@ -10,30 +10,12 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      tasks: [
-        {
-          index: 1,
-          content: 'Take out the trash',
-          completed: false
-        },
-        {
-          index: 2,
-          content: 'Buy bread',
-          completed: false
-        },
-        {
-          index: 3,
-          content: 'Teach penguins to fly',
-          completed: true
-        }
-      ],
+      tasks: [],
       completedTasks: [],
-      indexCount: 4,
+      indexCount: 0,
       allFilterToggler: true,
       remainingFilterToggler: false,
       completedFilterToggler: false,
-
-
       userInputValueHolder:"",
     };
   }
@@ -50,15 +32,14 @@ export default class App extends React.Component {
         return ({
           indexCount: this.state.indexCount + 1,
           tasks: prevState.tasks.concat(temp),
-          userInputValueHolder: " "
+          userInputValueHolder: ""
         })
       }
     )
     inputFieldRef.current.value = "";
     return true;
-
   }
-
+  // method to delete user task from remaining Tasks.
   deleteUserTask(e) {
     let buttonIndex = parseInt(e.target.id);
     let indexer = this.state.tasks.findIndex(x => x.index === buttonIndex);
@@ -76,6 +57,23 @@ export default class App extends React.Component {
 
   }
 
+  // method to delete user task from Completed Tasks.
+  deleteCompletedUserTask(e) {
+    let buttonIndex = parseInt(e.target.id);
+    let indexer = this.state.completedTasks.findIndex(x => x.index === buttonIndex);
+    this.state.completedTasks.splice(indexer, 1)
+    this.setState(
+      (prevState) => {
+        return (
+          {
+            tasks: prevState.tasks,
+          }
+        );
+      }
+    )
+
+  }
+  // Filter Toggler Methods Start.
   allToggler() {
     if(!this.state.allFilterToggler) {
       this.setState({
@@ -105,21 +103,43 @@ export default class App extends React.Component {
       })
     }
   }
+  // Filter Toggler Methods End.
 
+  // Retrieve Data from Local Storage.
+  componentWillMount() {
+    let remTask = JSON.parse(localStorage.getItem('remainingTasks'));
+    let compTask = JSON.parse(localStorage.getItem('completedTasks'));
+
+    if(remTask) {
+      this.setState({
+        tasks: remTask
+      })
+    }
+
+    if(compTask) {
+      this.setState({
+        completedTasks: compTask
+      })      
+    }
+  }
+  
   render() {
+    localStorage.setItem('remainingTasks', JSON.stringify(this.state.tasks));
+    localStorage.setItem('completedTasks', JSON.stringify(this.state.completedTasks));
+
     let toggler = "";
     if(this.state.allFilterToggler) {
       toggler = 
       <React.Fragment>
-        <RemainingTasks task = {this.state.tasks} deleteTask = {(e) => this.deleteUserTask(e)}/>
+        <RemainingTasks editTask = {(x) => this.editTask(x)} task = {this.state.tasks} deleteTask = {(e) => this.deleteUserTask(e)}/>
           <br/>
-        <CompletedTasks task = {this.state.completedTasks}/>
+          <CompletedTasks task = {this.state.completedTasks} deleteTask = {(e) => this.deleteCompletedUserTask(e)}/>
       </React.Fragment>
     }
     if(this.state.remainingFilterToggler) {
-      toggler = <RemainingTasks task = {this.state.tasks} deleteTask = {(e) => this.deleteUserTask(e)}/>
+      toggler = <RemainingTasks editTask = {this.editTask} task = {this.state.tasks} deleteTask = {(e) => this.deleteUserTask(e)}/>
     }if(this.state.completedFilterToggler) {
-      toggler = <CompletedTasks task = {this.state.completedTasks}/>
+      toggler = <CompletedTasks task = {this.state.completedTasks} deleteTask = {(e) => this.deleteCompletedUserTask(e)}/>
     }
     return(
       <div className = "outerWrapper container col-sm-6 col-sm-offset-3 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
@@ -138,7 +158,6 @@ export default class App extends React.Component {
           />
           {toggler}
         </div>
-
       </div>
     );
   }

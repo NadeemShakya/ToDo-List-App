@@ -69,6 +69,7 @@ h1 {
 }
 .completed {
     color: #028b75;
+    text-decoration: line-through;
 }
 
 
@@ -76,7 +77,6 @@ h1 {
     display: table;
     width: 100%;
     margin: 5% 0;
-    /* background:red; */
     padding:0;
 }
 
@@ -87,7 +87,7 @@ h1 {
     border-bottom: 1px solid rgba(48, 47, 47, 0.2);
     padding: 8px;
     text-align: center;
-    opacity: .9;    /* color: rgba(48, 47, 47, 0.8); */
+    opacity: .9;
 }
 
 .filterClass ul li:hover {
